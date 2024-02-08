@@ -12,26 +12,12 @@
 		<script language="javascript" type="text/javascript">
 			function PageLoad()
 			{	
-				var CurrentURL = window.location.href;
-				
-				if (CurrentURL.lastIndexOf("?vin=") > 0)
-				{
-					//VIN was passed in, so decode it and display results
-					var VINstartloc = CurrentURL.lastIndexOf("?vin=") + 5;
-					C("txtVIN").value = CurrentURL.substring(VINstartloc);
-					Decode();
-				}
-				else
-				{
-					//No VIN passed in
-					C("txtVIN").focus();
-				}
+				C("txtVIN").focus();
 			}
 		
 			function Decode()
 			{
-				var InputString = C("txtVIN").value;
-					
+				var InputString = C("txtVIN").value;					
 				if (InputString == "")
 				{
 					C("lblResults").innerHTML = "<font color=red>You didn't type anything...</font>";
@@ -218,15 +204,9 @@
 			}
 			
 			function FormatString(InputString)
-			{
-				
-				for (i=0; i < InputString.length - 1; i++)
-				{
-					InputString = InputString.replace("a", "A").replace("b", "B").replace("c", "C").replace("d", "D").replace("e", "E").replace("f", "F").replace("g", "G").replace("h", "H")
-				                             .replace("i", "I").replace("j", "J").replace("k", "K").replace("l", "L").replace("m", "M").replace("n", "N").replace("o", "O").replace("p", "P").replace("q", "Q")
-				                             .replace("r", "R").replace("s", "S").replace("t", "T").replace("u", "U").replace("v", "V").replace("w", "W").replace("x", "X").replace("y", "Y").replace("z", "Z")
-				                             .replace("-", "").replace(" ", "");		                             
-				}
+			{				
+				InputString = InputString.toUpperCase();
+				InputString = InputString.replace("-", "").replace(" ", "");
 				
 		        return InputString
 			}
@@ -234,10 +214,6 @@
 			function DisplayResults(Year, Model)
 			{
 				C("lblResults").innerHTML = "<b>Decoding Results:<font color=red> " + Year + " " + Model + "</font></b>";
-				
-				//also create text to link here
-				//C("trLink").style.display = '';
-				//C("txtLink").value = "http://atcvin.webs.com?vin=" + C("txtVIN").value;
 			}
 			
 			function C(ctlName)
@@ -278,5 +254,5 @@
         <br>
 		
         <h3><a target="_blank" href="http://www.atcvin.webs.com/RecoilInfo">To learn more about Honda ATC recoils click here</a></font></h3>
-    </body>
+	</body>
 </html>
