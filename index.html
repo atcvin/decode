@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Decode Your Honda ATC VIN</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<meta name="format-detection" content="telephone=no">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300" rel="stylesheet" type="text/css">
+		<link href="./style.css" rel="stylesheet" type="text/css">
+		<meta name="description" content="Decode your Honda 3-wheeler VIN here" />
+		<meta name="keywords" content="honda, atc, 3-wheeler, 3wheeler, 3, wheeler, all terrain cycle, vin, decode, vehicle identification number" />
+		
+		<script language="javascript" type="text/javascript">
+			function PageLoad()
+			{	
+				C("txtVIN").focus();
+			}
+		
+			function Decode()
+			{
+				var InputString = C("txtVIN").value;					
+				if (InputString == "")
+				{
+					C("lblResults").innerHTML = "<font color=red>You didn't type anything...</font>";
+					C("txtVIN").focus();
+					return;
+				}
+					
+				InputString = FormatString(InputString);
+				var Year;
+				var Model;
+						
+				//First see if this is a pre-1980 VIN. Their VINs start with the model name.
+				if (InputString.substring(0, 7) == "ATC7010")
+				{
+					Year = "1973";
+					Model = "ATC 70";
+					DisplayResults(Year, Model);
+					return;
+				}
+				
+				if (InputString.substring(0, 7) == "ATC7011")
+				{
+					Year = "1974";
+					Model = "ATC 70";
+					DisplayResults(Year, Model);
+					return;
+				}
+				
+				if (InputString.substring(0, 7) == "ATC7020")
+				{
+					Year = "1978";
+					Model = "ATC 70";
+					DisplayResults(Year, Model);
+					return;
+				}
+				
+				if (InputString.substring(0, 7) == "ATC7021")
+				{
+					Year = "1979";
+					Model = "ATC 70";
+					DisplayResults(Year, Model);
+					return;
+				}
+				
+				if (InputString.substring(0, 5) == "US901")
+				{
+					Year = "1970-1971";
+					Model = "US 90";
+					DisplayResults(Year, Model);
+					return;
+				}
+				
+				if (InputString.substring(0, 5) == "US902")
+				{
+					Year = "1972-1973";
+					Model = "US 90";
+					DisplayResults(Year, Model);
+					return;
+				}
+				
+				if (InputString.substring(0, 7) == "ATC9013")
+				{
+					Year = "1974";
+					Model = "ATC 90";
+					DisplayResults(Year, Model);
+					return;
+				}
+				
+				if (InputString.substring(0, 7) == "ATC9014")
+				{
+					Year = "1975";
+					Model = "ATC 90";
+					DisplayResults(Year, Model);
+					return;
+				}
+				
+				if (InputString.substring(0, 7) == "ATC9015")
+				{
+					Year = "1976";
+					Model = "ATC 90";
+					DisplayResults(Year, Model);
+					return;
+				}
+				
+				if (InputString.substring(0, 7) == "ATC9016")
+				{
+					Year = "1977";
+					Model = "ATC 90";
+					DisplayResults(Year, Model);
+					return;
+				}
+				
+				if (InputString.substring(0, 7) == "ATC9017")
+				{
+					Year = "1978";
+					Model = "ATC 90";
+					DisplayResults(Year, Model);
+					return;
+				}
+				
+				if (InputString.substring(0, 6) == "ATC110")
+				{
+					//Only year 110's VIN was like this
+					Year = "1979";
+					Model = "ATC 110";
+					DisplayResults(Year, Model);
+					return;
+				}
+				
+				//Seems 1980 110 and 185 may only be 11 digits long??
+				if (InputString.substring(0, 4) == "TB02" && InputString.length == 11)
+				{
+					Year = "1980";
+					Model = "ATC 110";
+					DisplayResults(Year, Model);
+					return;
+				}
+				
+				//Seems 1980 110 and 185 may only be 11 digits long??
+				if (InputString.substring(0, 4) == "TB01" && InputString.length == 11)
+				{
+					Year = "1980";
+					Model = "ATC 185";
+					DisplayResults(Year, Model);
+					return;
+				}
+		
+				//For 1980+ VINs, get the length of the input string. Should be 14 or 17 characters.
+				if (InputString.substring(0, 2) == "JH" && InputString.length == 17) 
+				{
+					//Normal 17 digit VIN. Do nothing.
+				}
+				else if (InputString.substring(0, 2) == "TB" && InputString.length == 14) 
+				{
+					//Some of the early 80's VINs started without the 'JH#', so prepend it to make things easier below.
+					InputString = "JH1" + InputString;
+				}
+				else
+				{
+					C("lblResults").innerHTML = "<font color=red>Invalid Honda ATC VIN</font>";
+					return;
+				}
+				
+				//Next figure out the year from the 10th digit
+				var YearDigit = InputString.substring(9, 10);		
+				switch (YearDigit)
+				{
+					case "0": Year = "1980"; break;
+					case "B": Year = "1981"; break;
+					case "C": Year = "1982"; break;
+					case "D": Year = "1983"; break;
+					case "E": Year = "1984"; break;
+					case "F": Year = "1985"; break;
+					case "G": Year = "1986"; break;
+					case "H": Year = "1987"; break;
+					default: Year = "Unknown Year";
+				}				
+		
+				//Next determine the model by looking at the 4-8 digits
+				var ModelDigits = InputString.substring(3, 8);
+				switch (ModelDigits)
+				{
+					case "TB030": Model = "ATC 70"; break;
+					case "TB020":
+					case "TB022": Model = "ATC 110"; break;
+					case "TE010": Model = "ATC 125m"; break;
+					case "TB012": Model = "ATC 185"; break;
+					case "TB010": Model = "ATC 185s"; break;
+					case "TB050": Model = "ATC 200"; break;
+					case "TB051": Model = "ATC 200e Big Red"; break;
+					case "TB055": Model = "ATC 200es Big Red"; break;
+					case "TB054": Model = "ATC 200m"; break;
+					case "TB053": Model = "ATC 200s"; break;
+					case "TB052": Model = "ATC 200x"; break;
+					case "TE040": Model = "ATC 250es Big Red"; break;
+					case "TE042": Model = "ATC 250sx"; break;
+					case "TB060": Model = "ATC 250R"; break;
+					case "TE080": Model = "ATC 350x"; break;
+					default: Model = "Unknown ATC Model";
+				}
+				
+				//Finally set the label with the results
+				DisplayResults(Year, Model);
+			}
+			
+			function FormatString(InputString)
+			{				
+				InputString = InputString.toUpperCase();
+				InputString = InputString.replace("-", "").replace(" ", "");
+				
+		        return InputString
+			}
+			
+			function DisplayResults(Year, Model)
+			{
+				C("lblResults").innerHTML = "<b>Decoding Results:<font color=red> " + Year + " " + Model + "</font></b>";
+			}
+			
+			function C(ctlName)
+			{
+			    var ctl = ctlName;
+			    return document.getElementById(ctl);
+			}
+		</script>
+	</head>
+	
+	<body onload="PageLoad();">
+        <header>
+			<h1>Decode your Honda ATC VIN</h1>
+		</header>
+		
+		<table class="tblindex">
+			<tr>
+				<td>
+					<input type="text" size="25" id="txtVIN" maxlength="17" style="font:normal 12px tahoma;">&nbsp;
+					<input style="font:normal 12px tahoma;" type="submit" value="DECODE" onclick="Decode()">
+				</td>
+			</tr>
+		</table>
+		
+		<h3><label id="lblResults" /></h3>
+		
+		<table class="tblindex">
+			<tr>
+				<td class="indexitems" colspan="2">
+					Honda ATC VINs can be found on either side of the frame neck
+				</td>
+			</tr>
+			<tr>
+				<td class="sectionimage"><img src="./images/VIN_LeftSide.jpg"></td>
+				<td class="sectionimage"><img src="./images/VIN_RightSide.jpg"></td>
+			</tr>
+		</table>		
+        <br>
+		
+        <h3><a target="_blank" href="./recoilinfo/index.html">To learn more about Honda ATC recoils click here</a></font></h3>
+	</body>
+</html>
